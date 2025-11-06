@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pembayaran</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #0c0c0c 0%, #1a1a1a 100%);
+            color: #f0f0f0;
+            line-height: 1.6;
+            padding: 20px;
+            min-height: 100vh;
+            position: relative;
+            overflow-x: hidden;
+        }
+        
+        /* Efek latar belakang dekoratif */
+        .bg-decoration {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+        }
+        
+        .circle {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(76, 175, 80, 0.05);
+        }
+        
+        .circle:nth-child(1) {
+            width: 300px;
+            height: 300px;
+            top: -100px;
+            right: -100px;
+        }
+        
+        .circle:nth-child(2) {
+            width: 200px;
+            height: 200px;
+            bottom: -50px;
+            left: -50px;
+            background: rgba(37, 211, 102, 0.05);
+        }
+        
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background: rgba(30, 30, 30, 0.9);
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            position: relative;
+            z-index: 1;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            position: relative;
+        }
+        
+        .header h1 {
+            color: #ffffff;
+            font-size: 32px;
+            margin-bottom: 10px;
+            text-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+        }
+        
+        .header p {
+            color: #aaaaaa;
+            font-size: 16px;
+        }
+        
+        .header-icon {
+            font-size: 40px;
+            color: #4CAF50;
+            margin-bottom: 15px;
+            display: inline-block;
+            background: rgba(76, 175, 80, 0.1);
+            width: 80px;
+            height: 80px;
+            line-height: 80px;
+            border-radius: 50%;
+            text-align: center;
+        }
+        
+        .payment-method {
+            background: linear-gradient(145deg, #2d2d2d, #252525);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 25px;
+            border-left: 5px solid #4CAF50;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .payment-method:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.4);
+        }
+        
+        .payment-method::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 5px;
+            height: 100%;
+            background: linear-gradient(to bottom, #4CAF50, #2E7D32);
+        }
+        
+        .payment-method h3 {
+            color: #ffffff;
+            margin-bottom: 15px;
+            font-size: 22px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .payment-method h3 i {
+            margin-right: 10px;
+            font-size: 24px;
+        }
+        
+        .payment-number {
+            background: rgba(51, 51, 51, 0.8);
+            padding: 15px;
+            border-radius: 8px;
+            font-size: 20px;
+            font-weight: bold;
+            margin: 10px 0;
+            color: #4CAF50;
+            text-align: center;
+            letter-spacing: 1px;
+            border: 1px solid rgba(76, 175, 80, 0.3);
+            font-family: 'Courier New', monospace;
+            position: relative;
+        }
+        
+        .payment-number::after {
+            content: '\f0c5';
+            font-family: 'Font Awesome 6 Free';
+            font-weight: 900;
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: rgba(255, 255, 255, 0.3);
+            cursor: pointer;
+        }
+        
+        .qris-notice {
+            background: linear-gradient(145deg, #333333, #2a2a2a);
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            text-align: center;
+            border-left: 5px solid #ff9800;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+        }
+        
+        .qris-notice h3 {
+            color: #ff9800;
+            margin-bottom: 10px;
+            font-size: 22px;
+        }
+        
+        .reminder {
+            background: linear-gradient(145deg, #2d2d2d, #252525);
+            padding: 20px;
+            border-radius: 12px;
+            margin: 25px 0;
+            text-align: center;
+            border: 1px solid rgba(255, 152, 0, 0.5);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+            position: relative;
+        }
+        
+        .reminder h3 {
+            color: #ff9800;
+            margin-bottom: 10px;
+            font-size: 22px;
+        }
+        
+        .reminder::before {
+            content: '\f071';
+            font-family: 'Font Awesome 6 Free';
+            font-weight: 900;
+            position: absolute;
+            top: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #1e1e1e;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #ff9800;
+            font-size: 16px;
+            border: 2px solid rgba(255, 152, 0, 0.5);
+        }
+        
+        .contact {
+            background: linear-gradient(145deg, #2d2d2d, #252525);
+            padding: 20px;
+            border-radius: 12px;
+            margin: 25px 0;
+            text-align: center;
+            border-left: 5px solid #0088cc;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+        }
+        
+        .contact h3 {
+            color: #0088cc;
+            margin-bottom: 15px;
+            font-size: 22px;
+        }
+        
+        .contact a {
+            display: inline-flex;
+            align-items: center;
+            background: #0088cc;
+            color: white;
+            text-decoration: none;
+            padding: 10px 20px;
+            border-radius: 50px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            margin-top: 10px;
+        }
+        
+        .contact a:hover {
+            background: #006699;
+            transform: scale(1.05);
+        }
+        
+        .contact a i {
+            margin-right: 8px;
+        }
+        
+        .whatsapp-channel {
+            background: linear-gradient(145deg, #2d2d2d, #252525);
+            padding: 20px;
+            border-radius: 12px;
+            margin: 25px 0;
+            text-align: center;
+            border-left: 5px solid #25D366;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+        }
+        
+        .whatsapp-channel h3 {
+            color: #25D366;
+            margin-bottom: 15px;
+            font-size: 22px;
+        }
+        
+        .whatsapp-channel a {
+            display: inline-flex;
+            align-items: center;
+            background: #25D366;
+            color: white;
+            text-decoration: none;
+            padding: 12px 25px;
+            border-radius: 50px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+        
+        .whatsapp-channel a:hover {
+            background: #1da851;
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(37, 211, 102, 0.3);
+        }
+        
+        .whatsapp-channel a i {
+            margin-right: 10px;
+            font-size: 20px;
+        }
+        
+        .footer {
+            text-align: center;
+            margin-top: 30px;
+            color: #aaaaaa;
+            font-size: 14px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .pulse {
+            display: inline-block;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: #4CAF50;
+            margin-right: 8px;
+            animation: pulse 1.5s infinite;
+        }
+        
+        @keyframes pulse {
+            0% {
+                transform: scale(0.9);
+                box-shadow: 0 0 0 0 rgba(76, 175, 80, 0.7);
+            }
+            
+            70% {
+                transform: scale(1);
+                box-shadow: 0 0 0 10px rgba(76, 175, 80, 0);
+            }
+            
+            100% {
+                transform: scale(0.9);
+                box-shadow: 0 0 0 0 rgba(76, 175, 80, 0);
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .container {
+                padding: 20px;
+            }
+            
+            .header h1 {
+                font-size: 26px;
+            }
+            
+            .payment-number {
+                font-size: 18px;
+            }
+            
+            .header-icon {
+                width: 70px;
+                height: 70px;
+                line-height: 70px;
+                font-size: 35px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-decoration">
+        <div class="circle"></div>
+        <div class="circle"></div>
+    </div>
+    
+    <div class="container">
+        <div class="header">
+            <div class="header-icon">
+                <i class="fas fa-credit-card"></i>
+            </div>
+            <h1>Metode Pembayaran</h1>
+            <p>Pilih metode pembayaran yang paling nyaman untuk Anda</p>
+        </div>
+        
+        <div class="payment-method">
+            <h3><i class="fab fa-cc-dana" style="color: #00a2ff;"></i> DANA</h3>
+            <div class="payment-number">083861426415</div>
+        </div>
+        
+        <div class="payment-method">
+            <h3><i class="fab fa-google-wallet" style="color: #8e44ad;"></i> GOPAY</h3>
+            <div class="payment-number">083861426415</div>
+        </div>
+        
+        <div class="qris-notice">
+            <h3><i class="fas fa-qrcode"></i> QRIS</h3>
+            <p>BELUM ADA MAAF</p>
+        </div>
+        
+        <div class="reminder">
+            <h3><i class="fas fa-exclamation-circle"></i> Jangan Lupa!</h3>
+            <p>Kirim bukti transfer ya kak</p>
+        </div>
+        
+        <div class="contact">
+            <h3><i class="fab fa-telegram"></i> Hubungi Saya</h3>
+            <p>Untuk konfirmasi pembayaran dan informasi lainnya</p>
+            <a href="https://t.me/manzofficial" target="_blank">
+                <i class="fab fa-telegram"></i> Telegram: @manzofficial
+            </a>
+        </div>
+        
+        <div class="whatsapp-channel">
+            <h3><i class="fab fa-whatsapp"></i> Saluran WhatsApp</h3>
+            <p>Bergabunglah dengan saluran WhatsApp kami untuk informasi terbaru</p>
+            <a href="https://whatsapp.com/channel/0029Vb6vvsGISTkGsaJVdc2o" target="_blank">
+                <i class="fab fa-whatsapp"></i> Gabung Saluran WhatsApp
+            </a>
+        </div>
+        
+        <div class="footer">
+            <p><span class="pulse"></span> Terima kasih atas pembayaran Anda!</p>
+        </div>
+    </div>
+
+    <script>
+        // Animasi untuk nomor pembayaran - salin ke clipboard saat diklik
+        document.querySelectorAll('.payment-number').forEach(element => {
+            element.addEventListener('click', function() {
+                const text = this.innerText;
+                navigator.clipboard.writeText(text).then(() => {
+                    const originalText = this.innerText;
+                    this.innerText = 'Tersalin!';
+                    this.style.color = '#ff9800';
+                    
+                    setTimeout(() => {
+                        this.innerText = originalText;
+                        this.style.color = '#4CAF50';
+                    }, 1500);
+                });
+            });
+        });
+    </script>
+</body>
+</html>
